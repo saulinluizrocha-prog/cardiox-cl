@@ -176,7 +176,7 @@ header {
 
 .block_01 {
     padding-bottom: 95px;
-    background: url('https://z-box.site/cardiox/assets/img/bg_01.jpg')no-repeat center;
+    background: #2c1a23 url('../img/bg_01.jpg') no-repeat center;
     background-size: cover;
 }
 
@@ -227,7 +227,7 @@ header {
     text-align: center;
     color: #ffffff;
     padding: 15px 10px 35px;
-    background: url('https://z-box.site/cardiox/assets/img/sale.png')no-repeat center;
+    background: url('../img/sale.png') no-repeat center;
     background-size: contain;
 }
 
@@ -323,7 +323,7 @@ header {
 .customSelect {
     outline: none;
     margin-bottom: 20px;
-    background: url('https://z-box.site/cardiox/assets/img/custom_select.png')no-repeat 95% 20px;
+    background: url('../img/custom_select.png') no-repeat 95% 20px;
 }
 
 .input-field label:not(.label-icon).active {
@@ -585,7 +585,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 }
 
 .block_07 {
-    background: url('https://z-box.site/cardiox/assets/img/bg_01.jpg')no-repeat center;
+    background: #2c1a23 url('../img/bg_01.jpg') no-repeat center;
     background-size: cover;
 }
 
@@ -831,7 +831,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 }
 
 .block_12 {
-    background: url('https://z-box.site/cardiox/assets/img/bg_01.jpg')no-repeat center;
+    background: #2c1a23 url('../img/bg_01.jpg') no-repeat center;
     background-size: cover;
 }
 
