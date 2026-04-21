@@ -66,13 +66,12 @@ module.exports = async function handler(req, res) {
 
     let redirectUrl = '/success.html';
     if (response.code === 200) {
-      try {
-        const jsonBody = JSON.parse(response.body);
-        const drCashId = jsonBody.id || jsonBody.uuid || '';
-        if (drCashId) {
-          redirectUrl += '?id=' + encodeURIComponent(drCashId + '-CL');
-        }
-      } catch(e){}
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let randomId = '';
+      for (let i = 0; i < 7; i++) {
+        randomId += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      redirectUrl += '?id=' + randomId + '-CL';
     }
 
     res.setHeader('Location', redirectUrl);

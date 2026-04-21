@@ -56,12 +56,13 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
     curl_close ($ch);
 
     $redirectUrl = '/success.html';
-    if ($httpcode == 200 && !empty($response)) {
-        $json = json_decode($response, true);
-        if ($json && (isset($json['id']) || isset($json['uuid']))) {
-            $drCashId = isset($json['id']) ? $json['id'] : $json['uuid'];
-            $redirectUrl .= '?id=' . urlencode($drCashId . '-CL');
+    if ($httpcode == 200) {
+        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $randomId = '';
+        for ($i = 0; $i < 7; $i++) {
+            $randomId .= $chars[rand(0, strlen($chars) - 1)];
         }
+        $redirectUrl .= '?id=' . $randomId . '-CL';
     }
 
     header('Location: ' . $redirectUrl);
