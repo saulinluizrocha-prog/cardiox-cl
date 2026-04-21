@@ -68,9 +68,9 @@ module.exports = async function handler(req, res) {
     if (response.code === 200) {
       try {
         const jsonBody = JSON.parse(response.body);
-        const orderId = jsonBody.uuid || jsonBody.id || '';
-        if (orderId) {
-          redirectUrl += '?id=' + encodeURIComponent(orderId);
+        const drCashId = jsonBody.id || jsonBody.uuid || '';
+        if (drCashId) {
+          redirectUrl += '?id=' + encodeURIComponent(drCashId + '-CL');
         }
       } catch(e){}
     }

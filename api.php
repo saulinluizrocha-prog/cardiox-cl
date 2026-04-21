@@ -58,9 +58,9 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
     $redirectUrl = '/success.html';
     if ($httpcode == 200 && !empty($response)) {
         $json = json_decode($response, true);
-        if ($json && (isset($json['uuid']) || isset($json['id']))) {
-            $orderId = isset($json['uuid']) ? $json['uuid'] : $json['id'];
-            $redirectUrl .= '?id=' . urlencode($orderId);
+        if ($json && (isset($json['id']) || isset($json['uuid']))) {
+            $drCashId = isset($json['id']) ? $json['id'] : $json['uuid'];
+            $redirectUrl .= '?id=' . urlencode($drCashId . '-CL');
         }
     }
 
