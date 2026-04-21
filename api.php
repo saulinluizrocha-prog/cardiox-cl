@@ -55,7 +55,16 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
     curl_close ($ch);
 
-    header('Location: /success.html');
+    $redirectUrl = '/success.html';
+    if ($httpcode == 200 && !empty($response)) {
+        $json = json_decode($response, true);
+        if ($json && (isset($json['uuid']) || isset($json['id']))) {
+            $orderId = isset($json['uuid']) ? $json['uuid'] : $json['id'];
+            $redirectUrl .= '?id=' . urlencode($orderId);
+        }
+    }
+
+    header('Location: ' . $redirectUrl);
     exit;
 } else {
     header('Location: /');

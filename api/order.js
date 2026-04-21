@@ -53,18 +53,29 @@ module.exports = async function handler(req, res) {
   };
 
   try {
-    await new Promise((resolve, reject) => {
-      const request = https.request(options, (response) => {
+    const response = await new Promise((resolve, reject) => {
+      const request = https.request(options, (res) => {
         let responseBody = '';
-        response.on('data', (chunk) => (responseBody += chunk));
-        response.on('end', () => resolve({ code: response.statusCode, body: responseBody }));
+        res.on('data', (chunk) => (responseBody += chunk));
+        res.on('end', () => resolve({ code: res.statusCode, body: responseBody }));
       });
       request.on('error', (err) => reject(err));
       request.write(payload);
       request.end();
     });
 
-    res.setHeader('Location', '/success.html');
+    let redirectUrl = '/success.html';
+    if (response.code === 200) {
+      try {
+        const jsonBody = JSON.parse(response.body);
+        const orderId = jsonBody.uuid || jsonBody.id || '';
+        if (orderId) {
+          redirectUrl += '?id=' + encodeURIComponent(orderId);
+        }
+      } catch(e){}
+    }
+
+    res.setHeader('Location', redirectUrl);
     res.status(302).end();
   } catch (err) {
     console.error('API Error:', err.message);
