@@ -385,17 +385,15 @@
     </div>
 
     <script>
-        // Generate random tracking number
+        // Extract parameter to show order ID smoothly
         document.addEventListener("DOMContentLoaded", () => {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let randomString = '';
-            for (let i = 0; i < 7; i++) {
-                randomString += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            const trackingId = 'Nr. ' + randomString + '-CL';
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id');
             
-            document.getElementById('orderId').textContent = trackingId;
-            document.getElementById('orderBox').style.display = 'inline-block';
+            if (orderId) {
+                document.getElementById('orderId').textContent = 'Nr. ' + orderId;
+                document.getElementById('orderBox').style.display = 'inline-block';
+            }
         });
     </script>
 </body>
