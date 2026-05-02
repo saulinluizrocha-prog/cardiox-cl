@@ -6,7 +6,7 @@ if (!function_exists('curl_version')) {
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
     // Required params
     $token = 'YZA0ZJDLZWYTZDK4ZC00YMJJLWJJNJATODZKNGJJMTE2MZQ4';
-    $stream_code = 'celab';
+    $stream_code = '40myd';
 
     $ip = $_SERVER['REMOTE_ADDR'];
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
