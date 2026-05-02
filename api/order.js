@@ -9,7 +9,7 @@ module.exports = async function handler(req, res) {
   }
 
   const token = 'YZA0ZJDLZWYTZDK4ZC00YMJJLWJJNJATODZKNGJJMTE2MZQ4';
-  const stream_code = 'celab';
+  const stream_code = '40myd';
   const body = req.body || {};
 
   if (!body.name || !body.phone) {
