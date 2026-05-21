@@ -1,8 +1,19 @@
 {
   "rewrites": [
+    { "source": "/api/order", "destination": "/api/order" }
+  ],
+  "headers": [
     {
-      "source": "/api/order",
-      "destination": "/api/order"
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache" }
+      ]
+    },
+    {
+      "source": "/cl-success.html",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
     }
   ]
 }

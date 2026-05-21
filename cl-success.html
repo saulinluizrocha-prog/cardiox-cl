@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Pedido Confirmado! - Cardiox</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary:       #E63946;
+            --primary-dim:   rgba(230, 57, 70, 0.15);
+            --primary-glow:  rgba(230, 57, 70, 0.4);
+            --accent:        #F4A261;
+            --accent-dim:    rgba(244, 162, 97, 0.15);
+            --success:       #10b981;
+            --glucose:       #6c63ff;   /* cor do cross-sell Glycogen */
+            --glucose-dim:   rgba(108, 99, 255, 0.12);
+            --bg:            #0f172a;
+            --glass:         rgba(30, 41, 59, 0.75);
+            --glass-border:  rgba(255, 255, 255, 0.08);
+            --text:          #F8F9FA;
+            --muted:         #94A3B8;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%,   rgba(230,57,70,.18)   0px, transparent 55%),
+                radial-gradient(at 100% 100%, rgba(108,99,255,.12) 0px, transparent 55%);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 30px 16px 60px;
+        }
+
+        .page-wrap {
+            max-width: 620px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* ── CARD PRINCIPAL ───────────────────────── */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px 36px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,.5);
+            text-align: center;
+            animation: slideUp .6s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity:0; transform:translateY(28px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        /* ── ÍCONE CHECK ──────────────────────────── */
+        .check-ring {
+            width: 84px; height: 84px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 22px;
+            box-shadow: 0 0 32px var(--primary-glow);
+            animation: popIn .5s cubic-bezier(.175,.885,.32,1.275) forwards;
+        }
+        .check-ring svg {
+            width:42px; height:42px; fill:none;
+            stroke:#fff; stroke-width:3;
+            stroke-linecap:round; stroke-linejoin:round;
+            stroke-dasharray:100; stroke-dashoffset:100;
+            animation: drawCheck .6s ease-out .45s forwards;
+        }
+        @keyframes popIn  { from{transform:scale(0)} to{transform:scale(1)} }
+        @keyframes drawCheck { to { stroke-dashoffset:0; } }
+
+        h1 {
+            font-size:26px; font-weight:800;
+            background: linear-gradient(to right, #fff, #cbd5e1);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            margin-bottom: 10px;
+        }
+
+        .greeting { font-size:17px; color:var(--accent); font-weight:600; margin-bottom:6px; }
+
+        .subtitle {
+            font-size:15px; color:var(--muted);
+            line-height:1.6; margin-bottom:28px;
+        }
+
+        .order-badge {
+            display: inline-block;
+            background: rgba(255,255,255,.05);
+            border: 1px dashed rgba(255,255,255,.12);
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-size:13px; color:#cbd5e1;
+            margin-bottom: 32px;
+        }
+        .order-badge span { color: var(--accent); font-weight:700; }
+
+        /* ── TRIGGERS ─────────────────────────────── */
+        .triggers { display:flex; flex-direction:column; gap:14px; text-align:left; }
+
+        .trigger {
+            background: rgba(0,0,0,.2);
+            border: 1px solid rgba(255,255,255,.05);
+            border-radius: 16px;
+            padding: 18px 20px;
+            display: flex; align-items: center; gap: 16px;
+            transition: transform .25s, background .25s;
+        }
+        .trigger:hover { transform:translateY(-2px); background:rgba(255,255,255,.03); }
+
+        .trigger.urgent {
+            background: linear-gradient(to right, rgba(230,57,70,.1), rgba(0,0,0,.2));
+            border-left: 4px solid var(--primary);
+        }
+
+        .t-icon {
+            min-width:48px; height:48px;
+            background:rgba(255,255,255,.05);
+            border-radius:12px;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .trigger.urgent .t-icon { background: rgba(230,57,70,.18); }
+
+        .t-icon svg {
+            width:24px; height:24px; fill:none;
+            stroke:var(--accent); stroke-width:2;
+            stroke-linecap:round; stroke-linejoin:round;
+        }
+        .trigger.urgent .t-icon svg { stroke:var(--primary); }
+
+        .t-body h3 { font-size:15px; font-weight:700; line-height:1.3; }
+        .trigger.urgent .t-body h3 { color:#fff; }
+        .t-body p { font-size:13px; color:var(--muted); margin-top:4px; line-height:1.5; }
+
+        /* ── CROSS-SELL CARD ──────────────────────── */
+        .crosssell-card {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(108,99,255,.3);
+            border-radius: 24px;
+            padding: 30px 32px;
+            box-shadow: 0 0 40px rgba(108,99,255,.1);
+            animation: slideUp .7s ease-out .15s both;
+        }
+
+        .cs-label {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--glucose);
+            background: var(--glucose-dim);
+            border: 1px solid rgba(108,99,255,.25);
+            border-radius: 20px;
+            padding: 4px 12px;
+            margin-bottom: 18px;
+        }
+        .cs-label svg { width:13px; height:13px; fill:none; stroke:var(--glucose); stroke-width:2.5; }
+
+        .cs-inner {
+            display: flex; align-items: flex-start; gap: 20px;
+        }
+
+        .cs-icon-wrap {
+            min-width: 64px; height: 64px;
+            background: var(--glucose-dim);
+            border: 1px solid rgba(108,99,255,.2);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .cs-icon-wrap svg {
+            width:32px; height:32px; fill:none;
+            stroke:var(--glucose); stroke-width:1.8;
+            stroke-linecap:round; stroke-linejoin:round;
+        }
+
+        .cs-content { flex: 1; }
+
+        .cs-title {
+            font-size: 17px; font-weight: 800;
+            color: #fff;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        .cs-title span { color: var(--glucose); }
+
+        .cs-desc {
+            font-size: 13.5px; color: var(--muted);
+            line-height: 1.6; margin-bottom: 16px;
+        }
+        .cs-desc strong { color: #e2e8f0; font-weight: 600; }
+
+        .cs-pills {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            margin-bottom: 18px;
+        }
+        .cs-pill {
+            font-size: 11.5px; font-weight: 600;
+            color: #e2e8f0;
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 20px;
+            padding: 4px 12px;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .cs-pill::before { content:'✓'; color: var(--success); font-weight:700; }
+
+        .cs-cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, var(--glucose), #8b5cf6);
+            color: #fff;
+            font-size: 14px; font-weight: 700;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            border: none; cursor: pointer;
+            transition: opacity .2s, transform .2s;
+            box-shadow: 0 4px 20px rgba(108,99,255,.35);
+        }
+        .cs-cta:hover { opacity:.9; transform:translateY(-1px); }
+        .cs-cta svg { width:16px; height:16px; fill:none; stroke:#fff; stroke-width:2.5; }
+
+        .cs-note {
+            font-size: 11px; color:var(--muted);
+            margin-top: 12px; text-align: center;
+        }
+
+        /* ── BADGES ───────────────────────────────── */
+        .badges {
+            display: flex; justify-content: center;
+            gap: 20px; flex-wrap: wrap;
+            padding-top: 24px;
+            margin-top: 24px;
+            border-top: 1px solid rgba(255,255,255,.05);
+        }
+        .badge {
+            display: flex; align-items: center; gap: 6px;
+            opacity: .75; transition: opacity .2s;
+        }
+        .badge:hover { opacity:1; }
+        .badge svg { width:15px; height:15px; fill:none; stroke:var(--success); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+        .badge span { font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+
+        /* ── ANIMAÇÕES DOS ÍCONES ─────────────────── */
+        .anim-pulse { animation: iconPulse 2.2s ease-in-out infinite; }
+        .anim-ring  { animation: iconRing  2s ease-in-out infinite; }
+        .anim-clock { animation: iconSpin  5s linear infinite; }
+
+        @keyframes iconPulse {
+            0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(244,162,97,.4); }
+            50%      { transform:scale(1.06); box-shadow:0 0 0 8px rgba(244,162,97,0); }
+        }
+        @keyframes iconRing {
+            0%,100% { transform:rotate(0); }
+            10% { transform:rotate(12deg); }
+            20% { transform:rotate(-8deg); }
+            30% { transform:rotate(5deg); }
+            40% { transform:rotate(-3deg); }
+            50% { transform:rotate(0); }
+        }
+        @keyframes iconSpin { 100% { transform:rotate(360deg); } }
+
+        /* ── RESPONSIVE ───────────────────────────── */
+        @media (max-width: 520px) {
+            .card, .crosssell-card { padding:28px 20px; border-radius:18px; }
+            h1 { font-size:22px; }
+            .cs-inner { flex-direction:column; gap:14px; }
+            .cs-icon-wrap { width:100%; height:52px; border-radius:12px; }
+            .trigger { flex-direction:column; text-align:center; }
+            .t-icon { margin:0 auto; }
+            .trigger.urgent { border-left:none; border-top:4px solid var(--primary); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+    <!-- ═══════════════════════════════════════
+         CARD PRINCIPAL — Confirmação do pedido
+    ═══════════════════════════════════════ -->
+    <div class="card">
+
+        <div class="check-ring">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+
+        <p class="greeting" id="greetingLine" style="display:none">¡Hola, <strong id="leadName"></strong>!</p>
+        <h1>¡Pedido Confirmado con Éxito!</h1>
+        <p class="subtitle">
+            Tu solicitud ha sido registrada en nuestro sistema.<br>
+            Espera la llamada de confirmación para completar tu pedido.
+        </p>
+
+        <div class="order-badge" id="orderBox" style="display:none">
+            Número de pedido: <span id="orderId"></span>
+        </div>
+
+        <div class="triggers">
+
+            <!-- Trigger 1 -->
+            <div class="trigger">
+                <div class="t-icon anim-pulse">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                    </svg>
+                </div>
+                <div class="t-body">
+                    <h3>¡MANTENTE ATENTO A TU CELULAR!</h3>
+                    <p>Nuestros especialistas se comunicarán con tu número para confirmar los detalles del despacho.</p>
+                </div>
+            </div>
+
+            <!-- Trigger 2 -->
+            <div class="trigger">
+                <div class="t-icon anim-ring">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                </div>
+                <div class="t-body">
+                    <h3>¡ATIENDE NUESTRAS LLAMADAS!</h3>
+                    <p>Es indispensable para autorizar y asegurar el despacho de tu paquete a domicilio.</p>
+                </div>
+            </div>
+
+            <!-- Trigger 3 — Urgencia -->
+            <div class="trigger urgent">
+                <div class="t-icon anim-clock">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <div class="t-body">
+                    <h3>¡NO PIERDAS ESTA OPORTUNIDAD!</h3>
+                    <p>Dentro de los próximos <strong>30 minutos</strong> estaremos contactándote para finalizar tu pedido.</p>
+                </div>
+            </div>
+
+        </div><!-- /triggers -->
+
+        <div class="badges">
+            <div class="badge">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>Compra Segura</span>
+            </div>
+            <div class="badge">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>Privacidad SSL</span>
+            </div>
+            <div class="badge">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                <span>Datos Protegidos</span>
+            </div>
+        </div>
+
+    </div><!-- /card principal -->
+
+
+    <!-- ═══════════════════════════════════════
+         CROSS-SELL — Glycogen Plus
+         Nicho: hipertensão + glicose alta = risco cardiovascular dobrado
+    ═══════════════════════════════════════ -->
+    <div class="crosssell-card">
+
+        <div class="cs-label">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+            Especialmente para ti
+        </div>
+
+        <div class="cs-inner">
+
+            <div class="cs-icon-wrap">
+                <!-- Ícone: molécula de glicose / saúde metabólica -->
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"></path>
+                    <circle cx="12" cy="12" r="7" stroke-dasharray="3 2"></circle>
+                </svg>
+            </div>
+
+            <div class="cs-content">
+                <p class="cs-title">
+                    ¿Sabías que el <span>azúcar alta</span> duplica el riesgo de infarto?
+                </p>
+                <p class="cs-desc">
+                    La hipertensión y la glucosa elevada son las dos principales causas de enfermedades cardiovasculares.
+                    Mientras Cardiox cuida tu presión arterial, <strong>Glycogen Plus</strong> regula tus niveles de azúcar
+                    — una combinación que los cardiólogos recomiendan cada vez más.
+                </p>
+
+                <div class="cs-pills">
+                    <span class="cs-pill">Controla la glucosa</span>
+                    <span class="cs-pill">100% natural</span>
+                    <span class="cs-pill">Sin receta médica</span>
+                </div>
+
+                <!-- 
+                    ⚠️  SUBSTITUIR O HREF ABAIXO PELO LINK REAL DO GLYCOGEN PLUS
+                    quando a página de vendas estiver pronta.
+                -->
+                <a href="#glycogen-plus-link-aqui" class="cs-cta" id="glycogenCta">
+                    Quiero saber más
+                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+
+                <p class="cs-note">Sin compromiso · Solo información · Puedes ignorar esto</p>
+            </div>
+
+        </div>
+
+    </div><!-- /cross-sell -->
+
+</div><!-- /page-wrap -->
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var params  = new URLSearchParams(window.location.search);
+    var orderId = params.get('id');
+    var name    = params.get('name');
+
+    // Mostrar ID do pedido
+    if (orderId) {
+        document.getElementById('orderId').textContent = orderId;
+        document.getElementById('orderBox').style.display = 'inline-block';
+    }
+
+    // Personalizar com o nome do lead
+    if (name) {
+        var decoded = decodeURIComponent(name);
+        // Capitaliza primeira letra
+        decoded = decoded.charAt(0).toUpperCase() + decoded.slice(1).toLowerCase();
+        document.getElementById('leadName').textContent = decoded;
+        document.getElementById('greetingLine').style.display = 'block';
+    }
+
+    // Passar parâmetros de tracking para o link do cross-sell (quando tiver)
+    var cta  = document.getElementById('glycogenCta');
+    var href = cta.getAttribute('href');
+    if (href && href !== '#glycogen-plus-link-aqui') {
+        var sub1 = sessionStorage.getItem('cl_sub1') || params.get('sub1') || '';
+        var gclid = sessionStorage.getItem('cl_gclid') || params.get('gclid') || '';
+        var extras = [];
+        if (sub1)  extras.push('sub1='  + encodeURIComponent(sub1));
+        if (gclid) extras.push('gclid=' + encodeURIComponent(gclid));
+        if (extras.length) {
+            cta.href = href + (href.includes('?') ? '&' : '?') + extras.join('&');
+        }
+    }
+});
+</script>
+
+</body>
+</html>
