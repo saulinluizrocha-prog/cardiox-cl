@@ -6,7 +6,7 @@
      Vercel  → '/api/order'
      Hostinger → 'send.php'
      ============================================================ */
-  var FORM_ACTION = 'send.php';
+  var FORM_ACTION = '/api/order';
 
   /* ============================================================
      1. CAPTURA DE PARAMS DA URL (gclid, sub1-5, utms)
