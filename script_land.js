@@ -2,6 +2,13 @@
   'use strict';
 
   /* ============================================================
+     CONFIGURAÇÃO DO ENDPOINT
+     Vercel  → '/api/order'
+     Hostinger → 'send.php'
+     ============================================================ */
+  var FORM_ACTION = 'send.php';
+
+  /* ============================================================
      1. CAPTURA DE PARAMS DA URL (gclid, sub1-5, utms)
      ============================================================ */
   var urlParams = new URLSearchParams(window.location.search);
@@ -110,7 +117,7 @@
       (function (form) {
 
         // 5a. Definir action e method
-        form.action = '/api/order' + window.location.search;
+        form.action = FORM_ACTION + window.location.search;
         form.method = 'POST';
 
         // 5b. Injetar campos hidden de rastreamento
